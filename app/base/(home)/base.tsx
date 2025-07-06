@@ -7,8 +7,9 @@ import { Separator } from '@/components/ui/separator';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
-import { VehicleCard } from '../_components/vehicleCard';
+import { VehicleCard } from '../../../components/vehicleCard';
 import BaseSidebar from '../_components/sidebar/sidebar';
+import MapRoute from '@/components/MapRoute';
 
 type Props = {
     defaultLayout: number[] | undefined
@@ -102,7 +103,10 @@ const Base = ({ defaultLayout = [20,32,48], navCollapsedSize, defaultCollapsed }
                         </div>
                     </TabsContent>
                     <TabsContent value='route'>
-                        Route
+                        <MapRoute
+                            origin={{ lat: 28.6139, lng: 77.2090 }} 
+                            destination={{ lat: 19.0760, lng: 72.8777 }}
+                        />
                     </TabsContent>
                 </Tabs>
             </ResizablePanel>

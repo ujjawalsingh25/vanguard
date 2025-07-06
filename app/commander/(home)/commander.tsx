@@ -7,6 +7,10 @@ import { Separator } from '@/components/ui/separator';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
+import MapRoute from '../../../components/MapRoute';
+import { VehicleCard } from '@/components/vehicleCard';
+import SearchSection from '../_components/SearchSection';
+import GoogleMapSection from '../_components/GoogleMapSection';
 
 type Props = {
     defaultLayout: number[] | undefined
@@ -48,8 +52,7 @@ const Commander = ({ defaultLayout = [20,32,48], navCollapsedSize, defaultCollap
                         Vehicles
                     </div>
                     <Separator />
-                    {/* Sidebar */}
-                    Sidebar
+                    <SearchSection />
                     <div className='flex-1'></div>
                     {/* AI */}
                     Ask AI
@@ -58,7 +61,7 @@ const Commander = ({ defaultLayout = [20,32,48], navCollapsedSize, defaultCollap
 
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-                <Tabs defaultValue='inbox'>
+                <Tabs defaultValue='health'>
                     <div className='flex items-center px-4 py-2'>
                         <h1 className='text-xl font-bold'>All Data</h1>
                         <TabsList className='ml-auto'>
@@ -72,19 +75,17 @@ const Commander = ({ defaultLayout = [20,32,48], navCollapsedSize, defaultCollap
                     </div>
 
                     <Separator />
-                    <div>Search Bar</div>
                     
-                    <TabsContent value='health'>
-                        Health
+                    <TabsContent value='health' className='ml-auto w-full mr-auto'>
+                        <VehicleCard tyrePressure={35} batteryCharging={14.7} fuelLevel={100} brakePressure={1500} engineTemp={105} />                  
                     </TabsContent>
                     <TabsContent value='route'>
-                        Route
+                        {/* <MapRoute
+                            origin={{ lat: 28.6139, lng: 77.2090 }} 
+                            destination={{ lat: 19.0760, lng: 72.8777 }}
+                        /> */}
+                        <GoogleMapSection />
                     </TabsContent>
-                    <div className='flex flex-col p-4 space-y-2'>
-                        <div>Vehicle 1</div>
-                        <div>Vehicle 2</div>
-                        <div>Vehicle 3</div>
-                    </div>
                 </Tabs>
             </ResizablePanel>
             <ResizableHandle withHandle />
