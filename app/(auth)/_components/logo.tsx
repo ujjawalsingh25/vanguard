@@ -25,9 +25,11 @@ export const Logo = () => {
                 "flex flex-col items-center",
                 font.className,
             )}>
-                <p className="text-xl text-white font-semibold mb-4">
-                    Stream Your Reality, Live Your Passion
-                </p>
+                <div>
+                    <p className="text-xl text-black font-semibold mb-4">
+                        Safeguarding Every Move, Mapping Every Mile
+                    </p>
+                </div>
             </div>
         </div>
     );

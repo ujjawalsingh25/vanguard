@@ -15,7 +15,7 @@ export const Logo = () => {
     return(
         <Link href="/">
             <div className="flex items-center gap-x-4 hover:opacity-75 transition">
-                <div className="bg-slate-700 rounded-full p-2 mr-12 shrink-0 lg:mr-0 lg:shrink">
+                <div className="bg-[#fff] rounded-full p-2 mr-12 shrink-0 lg:mr-0 lg:shrink">
                 <Image 
                     src= "/RealStreamLogo.svg"
                     alt= "Vanguard"

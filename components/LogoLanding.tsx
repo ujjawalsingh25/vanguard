@@ -11,7 +11,7 @@ const font = Poppins({
     weight: ["200", "300", "400", "500", "600", "700", "800"],
 })
 
-export const Logo = () => {
+export const LogoLanding = () => {
     return(
         <Link href="/">
             <div className="flex items-center gap-x-4 hover:opacity-75 transition">
@@ -24,12 +24,12 @@ export const Logo = () => {
                 />
                 </div>
                 <div>
-                    <p className={cn("hidden lg:block text-sm text-muted-foreground", font.className,)}>
+                    {/* <p className={cn("hidden lg:block text-sm text-muted-foreground", font.className,)}>
                         Safeguarding Every Move,
                     </p>
                     <p className={cn("hidden lg:block text-sm text-muted-foreground", font.className,)}>
                         Mapping Every Mile
-                    </p>
+                    </p> */}
                 </div>
             </div>
         </Link>

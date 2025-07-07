@@ -5,10 +5,10 @@ import { DirectionsRenderer, GoogleMap, MarkerF, OverlayView, OverlayViewF, useJ
 import { SourceContext } from '../context/SourceContext';
 import { DestinationContext } from '../context/DestinationContext';
 
-const containerStyle = {
-  width: '95%',
-  height: window.innerWidth*0.5,
-};
+// const containerStyle = {
+//   width: '95%',
+//   height: window.innerWidth*0.5,
+// };
 
 
 
@@ -18,6 +18,20 @@ function GoogleMapSection() {
   // const [directionRoutePoints, setDirectionRoutePoints] = useState([]);
   const [directionRoutePoints, setDirectionRoutePoints] = useState<google.maps.DirectionsResult | null>(null);
 
+  const [containerStyle, setContainerStyle] = useState<{ width: string; height: string }>({
+    width: '95%',
+    height: '400px', // fallback height for SSR
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setContainerStyle({
+        width: '95%',
+        height: `${window.innerWidth * 0.5}px`,
+      });
+    }
+  }, []);
+  
   const [center, setCenter] = useState({
     lat: 25.5584,
     lng: 85.1874,
@@ -100,8 +114,8 @@ function GoogleMapSection() {
           position={{lat: source.lat, lng: source.lng}}
           icon={{
             url: 'https://banner2.cleanpng.com/20190827/but/transparent-circle-icon-map-icon-marker-icon-5d69a270ae9d95.0023302115672039527152.jpg',
-            scaledSize: {width: 50, height: 50},
-            // scaledSize: new google.maps.Size(20, 20),
+            // scaledSize: {width: 50, height: 50},
+            scaledSize: new google.maps.Size(50, 50),
           }}
         >
           <OverlayViewF 
@@ -118,10 +132,11 @@ function GoogleMapSection() {
      {destination?.lat 
       ? <MarkerF  
           position={{lat: destination.lat, lng: destination.lng}}
-          icon={{
-            // url: 'https://c8.alamy.com/comp/R1RXJT/flag-point-vector-icon-isolated-on-transparent-background-flag-point-transparency-logo-concept-R1RXJT.jpg',
-            scaledSize: {width: 50, height: 50},
-          }}
+          // icon={{
+          //   // url: 'https://c8.alamy.com/comp/R1RXJT/flag-point-vector-icon-isolated-on-transparent-background-flag-point-transparency-logo-concept-R1RXJT.jpg',
+          //   // scaledSize: {width: 50, height: 50},
+          //   scaledSize: new google.maps.Size(20, 20),
+          // }}
         >
           <OverlayViewF 
             position={{lat: destination.lat, lng: destination.lng}}
