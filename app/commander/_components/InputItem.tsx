@@ -91,12 +91,18 @@ function InputItem({ locationType }: InputItemProps) {
     <div className='bg-slate-200 p-3 rounded-lg mt-3 flex items-center gap-4'>
       <div className='flex flex-row p-6 justify-center w-full'>
         <div className='flex flex-col w-full'>
-          <label htmlFor='locationTextField' className='mb-2 font-semibold'>
+          {/* <label htmlFor='locationTextField' className='mb-2 font-semibold'>
             Location
           </label>
           <input
             ref={inputRef}
-            id='locationTextField'
+            id='locationTextField' */}
+          <label htmlFor={`locationTextField-${locationType}`} className='mb-2 font-semibold'>
+            {locationType === 'destination' ? 'Destination' : 'Source'}
+          </label>
+          <input
+            ref={inputRef}
+            id={`locationTextField-${locationType}`}
             type='text'
             placeholder={locationType === 'destination' ? 'Enter Destination...' : 'Enter Source'}
             className='w-full bg-white border-gray-600 border-2 text-gray-700 px-4 py-2 rounded-xl'
