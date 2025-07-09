@@ -10,6 +10,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/component
 import { VehicleCard } from '../../../components/vehicleCard';
 import BaseSidebar from '../_components/sidebar/sidebar';
 import MapRoute from '@/components/MapRoute';
+import GoogleMapSection from '@/app/commander/_components/GoogleMapSection';
 
 type Props = {
     defaultLayout: number[] | undefined
@@ -103,10 +104,14 @@ const Base = ({ defaultLayout = [20,32,48], navCollapsedSize, defaultCollapsed }
                         </div>
                     </TabsContent>
                     <TabsContent value='route'>
-                        <MapRoute
+                        {/* <MapRoute
                             origin={{ lat: 28.6139, lng: 77.2090 }} 
                             destination={{ lat: 19.0760, lng: 72.8777 }}
-                        />
+                        /> */}
+
+                        <GoogleMapSection />
+
+
                     </TabsContent>
                 </Tabs>
             </ResizablePanel>

@@ -44,14 +44,14 @@ const CommanderHomePage = () => {
                                 >
                                     <div className="flex flex-col">
                                         <input 
-                                            className="w-4/5 bg-white border-gray-600 border-2 font-bold text-gray-700 px-8 rounded-2xl 
+                                            className="w-full bg-white border-gray-600 border-2 font-bold text-gray-700 px-8 rounded-2xl 
                                                 rounded-tl-[2rem] rounded-bl-xl rounded-tr-xl rounded-br-[2rem] mb-2" 
-                                            placeholder="Enter Latitude..."
+                                            placeholder="Enter Convey Number"
                                         /> 
                                         <input 
-                                            className="w-4/5 bg-white border-gray-600 border-2 font-bold text-gray-700 px-8 rounded-2xl 
+                                            className="w-full bg-white border-gray-600 border-2 font-bold text-gray-700 px-8 rounded-2xl 
                                                 rounded-tl-[2rem] rounded-bl-xl rounded-tr-xl rounded-br-[2rem]" 
-                                            placeholder="Enter Longitude..."
+                                            placeholder="Enter Commander Id"
                                         /> 
                                     </div>
                                     <button 

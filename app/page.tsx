@@ -2,9 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Navbar } from "./base/_components/navbar";
+import { Navbar } from "@/components/navbar";
 import { currentUser } from "@clerk/nextjs/server";
 import LandingPage from "./landingPage";
+import Dashboard from "./dashboard";
 import { NavbarLanding } from "@/components/NavbarLanding";
 
 export default async function Home() {
@@ -14,10 +15,10 @@ export default async function Home() {
     <>
       {!!user ? 
           (
-            <div className="text-2xl pb-2 bg-red-500 font-bold">
-              Vanguard
-              {/* <Actions /> */}
-            </div>
+            <>
+              <Navbar />
+              <Dashboard />
+            </>
           ): (
               <>
                 <NavbarLanding />

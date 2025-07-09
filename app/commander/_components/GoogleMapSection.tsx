@@ -160,7 +160,7 @@ function GoogleMapSection() {
           options={{
             polylineOptions: {
               strokeColor: '#D22B2B',
-              strokeWeight: 3,
+              strokeWeight: 5,
             },
             suppressMarkers: true
           }}

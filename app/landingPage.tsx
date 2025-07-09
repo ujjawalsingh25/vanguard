@@ -41,11 +41,11 @@ function LandingPage() {
                 </div>
                 </div>
                 <Card className="relative group overflow-hidden rounded-lg md:w-1/2">
-                <CardContent className="p-1">
-                    <video className="h-full w-full rounded-lg" autoPlay loop muted>
-                        <source src="/landing-video.mp4" type="video/mp4"></source>
-                    </video>
-                </CardContent>
+                    <CardContent className="p-1">
+                        <video className="h-full w-full rounded-lg" autoPlay loop muted>
+                            <source src="/landingvideo.mp4" type="video/mp4"></source>
+                        </video>
+                    </CardContent>
                 </Card>
             </div>
         </section>
