@@ -10,6 +10,7 @@ import {
 import { dark } from '@clerk/themes'
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import LatLongWrapper from "@/components/LatLongWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +36,9 @@ export default function RootLayout({
     <ClerkProvider appearance={{baseTheme: dark}}>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          {children}
+          <LatLongWrapper>
+            {children}
+          </LatLongWrapper>
         </body>
       </html>
     </ClerkProvider>

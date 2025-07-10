@@ -71,28 +71,31 @@ const Commander = ({ defaultLayout = [20,32,48], navCollapsedSize, defaultCollap
                             <TabsTrigger value='route' className='text-zinc-600 dark:text-zinc-200'>
                                 Route
                             </TabsTrigger>
+                            <TabsTrigger value='terrain-mapping' className='text-zinc-600 dark:text-zinc-200'>
+                                Terrain Mapping
+                            </TabsTrigger>
                         </TabsList>
                     </div>
 
                     <Separator />
                     
                     <TabsContent value='health' className='ml-auto w-full mr-auto'>
-                        <VehicleCard tyrePressure={35} batteryCharging={14.7} fuelLevel={100} brakePressure={1500} engineTemp={105} />                  
+                        <VehicleCard 
+                            tyrePressure={35} 
+                            batteryCharging={14.7} 
+                            fuelLevel={100} 
+                            brakePressure={1500} 
+                            engineTemp={105} 
+                        />
+
+
                     </TabsContent>
                     <TabsContent value='route'>
-                        {/* <MapRoute
-                            origin={{ lat: 28.6139, lng: 77.2090 }} 
-                            destination={{ lat: 19.0760, lng: 72.8777 }}
-                        /> */}
                         <GoogleMapSection />
                     </TabsContent>
                 </Tabs>
             </ResizablePanel>
             <ResizableHandle withHandle />
-
-            {/* <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-                Details
-            </ResizablePanel> */}
         </ResizablePanelGroup>
     </TooltipProvider> 
   )

@@ -7,7 +7,8 @@ import { Separator } from '@/components/ui/separator';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
-import { VehicleCard } from '../../../components/vehicleCard';
+import { VehicleCard } from '../_components/vehicleCard';
+
 import BaseSidebar from '../_components/sidebar/sidebar';
 import MapRoute from '@/components/MapRoute';
 import GoogleMapSection from '@/app/commander/_components/GoogleMapSection';

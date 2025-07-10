@@ -98,6 +98,12 @@ function GoogleMapSection() {
     setMap(null);
   }, []);
 
+  useEffect(() => {
+    if (source?.lat && destination?.lat && map) {
+      directionRoute();
+    }
+  }, [source?.lat, destination?.lat, map]);
+
   
   // return isLoaded ? (
   return (
