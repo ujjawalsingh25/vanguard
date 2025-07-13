@@ -15,7 +15,7 @@ export default function LatLongWrapper({
     name: '',
     label: '',
   });
-
+  const [navigate, setNavigate] = useState(false);
   const [destination, setDestination] = useState({
     lat: 0,
     lng: 0,
@@ -24,7 +24,7 @@ export default function LatLongWrapper({
   });
 
   return (
-    <SourceContext.Provider value={{ source, setSource }}>
+    <SourceContext.Provider value={{ source, setSource, navigate, setNavigate }}>
       <DestinationContext.Provider value={{ destination, setDestination }}>
         {children}
       </DestinationContext.Provider>

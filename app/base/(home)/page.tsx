@@ -11,14 +11,14 @@ const BaseHomePage = () => {
     const [source, setSource] = useState<{lat: number; lng: number; name: string; label: string;}>({
         lat: 0, lng: 0, name: '', label: '',
     });
-
+    const [navigate, setNavigate] = useState(false);
     const [destination, setDestination] = useState<{ lat: number; lng: number; name: string; label: string;}>({ 
         lat: 0, lng: 0, name: '', label: '',
     });
 
     return (
         <>
-            <SourceContext.Provider value={{source, setSource}} >
+            <SourceContext.Provider value={{source, setSource, navigate, setNavigate}} >
                 <DestinationContext value={{destination, setDestination}} >
                     {/* <LoadScript libraries={['places']} googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY} > */}
                     <LoadScript 
