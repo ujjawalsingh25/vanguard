@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 import { Separator } from '@/components/ui/separator';
@@ -18,8 +18,34 @@ type Props = {
     defaultCollapsed: boolean
 }
 
+const getRandomInRange = (min: number, max: number) =>
+    parseFloat((Math.random() * (max - min) + min).toFixed(1));
+
 const Commander = ({ defaultLayout = [20,32,48], navCollapsedSize, defaultCollapsed }: Props) => {
     const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+
+    const [vehicleData, setVehicleData] = useState({
+        tyrePressure: 32,
+        batteryCharging: 13.5,
+        fuelLevel: 75,
+        brakePressure: 1000,
+        engineTemp: 95,
+    });
+
+    // Update values every 2 seconds
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setVehicleData({
+                tyrePressure: getRandomInRange(30, 35),
+                batteryCharging: getRandomInRange(12.6, 14.7),
+                fuelLevel: getRandomInRange(20, 100),
+                brakePressure: getRandomInRange(800, 1500),
+                engineTemp: getRandomInRange(90, 105),
+            });
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -81,14 +107,17 @@ const Commander = ({ defaultLayout = [20,32,48], navCollapsedSize, defaultCollap
                     
                     <TabsContent value='health' className='ml-auto w-full mr-auto'>
                         <VehicleCard 
-                            tyrePressure={35} 
-                            batteryCharging={14.7} 
-                            fuelLevel={100} 
-                            brakePressure={1500} 
-                            engineTemp={105} 
+                            // tyrePressure={35} 
+                            // batteryCharging={14.7} 
+                            // fuelLevel={100} 
+                            // brakePressure={1500} 
+                            // engineTemp={105} 
+                            tyrePressure={vehicleData.tyrePressure}
+                            batteryCharging={vehicleData.batteryCharging}
+                            fuelLevel={vehicleData.fuelLevel}
+                            brakePressure={vehicleData.brakePressure}
+                            engineTemp={vehicleData.engineTemp}
                         />
-
-
                     </TabsContent>
                     <TabsContent value='route'>
                         <GoogleMapSection />

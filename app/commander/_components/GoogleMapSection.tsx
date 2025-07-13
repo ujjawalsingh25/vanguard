@@ -1,183 +1,180 @@
 'use client';
 
 import React, { useContext, useEffect, useState } from 'react';
-import { DirectionsRenderer, GoogleMap, MarkerF, OverlayView, OverlayViewF, useJsApiLoader } from '@react-google-maps/api';
+import {
+  DirectionsRenderer,
+  GoogleMap,
+  MarkerF,
+  OverlayViewF
+} from '@react-google-maps/api';
 import { SourceContext } from '../context/SourceContext';
 import { DestinationContext } from '../context/DestinationContext';
 
-// const containerStyle = {
-//   width: '95%',
-//   height: window.innerWidth*0.5,
-// };
+function GoogleMapSection() {
+  const { source, setSource, navigate } = useContext(SourceContext)!;
+  const { destination } = useContext(DestinationContext)!;
 
-
-
-function GoogleMapSection() {  
-  const { source, setSource } = useContext(SourceContext)!;
-  const { destination, setDestination } = useContext(DestinationContext)!;
-  // const [directionRoutePoints, setDirectionRoutePoints] = useState([]);
-  const [directionRoutePoints, setDirectionRoutePoints] = useState<google.maps.DirectionsResult | null>(null);
-
-  const [containerStyle, setContainerStyle] = useState<{ width: string; height: string }>({
-    width: '95%',
-    height: '400px', // fallback height for SSR
+  const [directionRoutePoints, setDirectionRoutePoints] =
+    useState<google.maps.DirectionsResult | null>(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [center, setCenter] = useState({
+    lat: 25.5584,
+    lng: 85.1874
   });
 
+  const [containerStyle, setContainerStyle] = useState({
+    width: '95%',
+    height: '400px'
+  });
+
+  // Dynamically resize container for responsiveness
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setContainerStyle({
         width: '95%',
-        height: `${window.innerWidth * 0.5}px`,
+        height: `${window.innerWidth * 0.5}px`
       });
     }
   }, []);
-  
-  const [center, setCenter] = useState({
-    lat: 25.5584,
-    lng: 85.1874,
-  });
-
-  useEffect(() => {
-    if(source?.lat&&map) {
-      map.panTo({
-        lat: source.lat,
-        lng: source.lng
-      }),
-      setCenter({
-        lat: source.lat,
-        lng: source.lng
-      })
-    }
-    if(source?.lat && destination?.lat) {
-      directionRoute();
-    }
-  }, [source]);
-
-  useEffect(() => {
-    if(destination?.lat&&map) {
-      setCenter({
-        lat: destination.lat,
-        lng: destination.lng
-      })
-    }
-    if(source?.lat && destination?.lat) {
-      directionRoute();
-    }
-  }, [destination]);
-
-  const directionRoute = () => {
-    const DirectionsService = new google.maps.DirectionsService();
-    DirectionsService.route({
-      origin: {lat: source.lat, lng: source.lng},
-      destination: {lat: destination.lat, lng: destination.lng},
-      travelMode: google.maps.TravelMode.DRIVING
-    }, (result, status) => {
-      // if(status === google.maps.DirectionsService.OK) {
-      if(status === google.maps.DirectionsStatus.OK) {
-        setDirectionRoutePoints(result)
-      } else {
-        console.error('Error: ');
-      }
-    })
-  }
-    
-  // const { isLoaded } = useJsApiLoader({
-  //   id: 'google-map-script',
-  //   googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || '', 
-  // });
-
-  const [map, setMap] = React.useState<google.maps.Map | null>(null);
 
   const onLoad = React.useCallback((map: google.maps.Map) => {
     const bounds = new window.google.maps.LatLngBounds(center);
     map.fitBounds(bounds);
     setMap(map);
-  }, []);
+  }, [center]);
 
   const onUnmount = React.useCallback(() => {
     setMap(null);
   }, []);
 
-  useEffect(() => {
-    if (source?.lat && destination?.lat && map) {
-      directionRoute();
-    }
-  }, [source?.lat, destination?.lat, map]);
+  const directionRoute = (origin: { lat: number; lng: number }) => {
+    if (!destination?.lat) return;
 
-  
-  // return isLoaded ? (
+    const DirectionsService = new google.maps.DirectionsService();
+    DirectionsService.route(
+      {
+        origin,
+        destination: { lat: destination.lat, lng: destination.lng },
+        travelMode: google.maps.TravelMode.DRIVING
+      },
+      (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+          setDirectionRoutePoints(result);
+        } else {
+          console.error('Directions error:', status);
+        }
+      }
+    );
+  };
+
+  // Live Navigation: Update source and directions as we move
+  useEffect(() => {
+    let watchId: number;
+
+    if (navigate && destination?.lat) {
+      if (navigator.geolocation) {
+        watchId = navigator.geolocation.watchPosition(
+          (position) => {
+            const liveLocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+              name: 'Live',
+              label: 'You'
+            };
+
+            setSource(liveLocation);
+            directionRoute(liveLocation); // real-time routing
+            setCenter({ lat: liveLocation.lat, lng: liveLocation.lng });
+
+            if (map) {
+              map.panTo({ lat: liveLocation.lat, lng: liveLocation.lng });
+            }
+          },
+          (error) => {
+            console.error('Geolocation error:', error);
+          },
+          {
+            enableHighAccuracy: true,
+            maximumAge: 0,
+            timeout: 5000
+          }
+        );
+      }
+    }
+
+    return () => {
+      if (watchId && navigator.geolocation) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
+  }, [navigate, destination?.lat, map]);
+
+  // 📍 Normal route (non-live): when source and destination selected
+  useEffect(() => {
+    if (source?.lat && destination?.lat && map && !navigate) {
+      setCenter({ lat: source.lat, lng: source.lng });
+      directionRoute({ lat: source.lat, lng: source.lng });
+    }
+  }, [source, destination, map, navigate]);
+
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={10}
+      zoom={14}
       onLoad={onLoad}
       onUnmount={onUnmount}
-      options={{mapId: '44db031e552db06424a4948d'}}
+      options={{ mapId: '44db031e552db06424a4948d' }}
     >
-     {source?.lat 
-      ? <MarkerF
-          position={{lat: source.lat, lng: source.lng}}
+      {/* Source Marker */}
+      {source?.lat && (
+        <MarkerF
+          position={{ lat: source.lat, lng: source.lng }}
           icon={{
-            url: 'https://banner2.cleanpng.com/20190827/but/transparent-circle-icon-map-icon-marker-icon-5d69a270ae9d95.0023302115672039527152.jpg',
-            // scaledSize: {width: 50, height: 50},
-            scaledSize: new google.maps.Size(50, 50),
+            url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/RedDot.svg/2048px-RedDot.svg.png',
+            scaledSize: new google.maps.Size(30, 30)
           }}
         >
-          <OverlayViewF 
-            position={{lat: source.lat, lng: source.lng}}
-            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+          <OverlayViewF
+            position={{ lat: source.lat, lng: source.lng }}
+            mapPaneName="overlayMouseTarget"
           >
-            <div className='p-2 bg-white font-bold inline-block'>
-              <p className='text-black text-[16px]'>{source.label}</p>
+            <div className="p-1 bg-black text-white font-semibold text-xs rounded">
+              You
             </div>
           </OverlayViewF>
-        </MarkerF> 
-      : null
-     }
-     {destination?.lat 
-      ? <MarkerF  
-          position={{lat: destination.lat, lng: destination.lng}}
-          // icon={{
-          //   // url: 'https://c8.alamy.com/comp/R1RXJT/flag-point-vector-icon-isolated-on-transparent-background-flag-point-transparency-logo-concept-R1RXJT.jpg',
-          //   // scaledSize: {width: 50, height: 50},
-          //   scaledSize: new google.maps.Size(20, 20),
-          // }}
-        >
-          <OverlayViewF 
-            position={{lat: destination.lat, lng: destination.lng}}
-            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-          >
-            <div className='p-2 bg-white font-bold inline-block'>
-              <p className='text-black text-[16px]'>{destination.label}</p>
-            </div>
-          </OverlayViewF>
-        </MarkerF> 
-      : null}
+        </MarkerF>
+      )}
 
-      {/* <DirectionsRenderer 
-        directions={directionRoutePoints}
-        options={{
-        }}
-      /> */}
+      {/* Destination Marker */}
+      {destination?.lat && (
+        <MarkerF position={{ lat: destination.lat, lng: destination.lng }}>
+          <OverlayViewF
+            position={{ lat: destination.lat, lng: destination.lng }}
+            mapPaneName="overlayMouseTarget"
+          >
+            <div className="p-2 bg-white font-bold inline-block">
+              <p className="text-black text-[16px]">{destination.label}</p>
+            </div>
+          </OverlayViewF>
+        </MarkerF>
+      )}
+
+      {/* Route line */}
       {directionRoutePoints && (
-        <DirectionsRenderer 
+        <DirectionsRenderer
           directions={directionRoutePoints}
           options={{
             polylineOptions: {
-              strokeColor: '#D22B2B',
-              strokeWeight: 5,
+              strokeColor: '#007bff',
+              strokeWeight: 5
             },
             suppressMarkers: true
           }}
         />
-       )}
-
+      )}
     </GoogleMap>
   );
-  // ) : (
-  //   <div>Loading Map...</div>
-  // );
 }
 
 export default GoogleMapSection;

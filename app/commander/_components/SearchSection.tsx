@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import InputItem from './InputItem';
 import { SourceContext } from '../context/SourceContext';
 import { DestinationContext } from '../context/DestinationContext';
 
 function SearchSection() {
-  const { source, setSource } = useContext(SourceContext)!;
+  const { source, setSource, navigate, setNavigate } = useContext(SourceContext)!;
   const { destination, setDestination } = useContext(DestinationContext)!;
 
   useEffect(() => {
@@ -17,13 +17,14 @@ function SearchSection() {
             <p className='text-[20px] font-bold'>Set Route</p>
               <InputItem locationType='source' />
               <InputItem locationType='destination' />
-              {/* <button type="submit" 
-                className="outline-none rounded-sm bg-[#2f72ed] text-white font-bold shadow-lg w-full px-4 py-2 
+              <button type="submit" 
+                onClick={() => setNavigate(!navigate)}
+                className="outline-none rounded-sm bg-[#2f72ed] text-white font-bold shadow-lg w-full px-4 py-2 mt-4 
                 transition-all duration-100 hover:bg-[#1d5cd0] hover:shadow-xl 
                 rounded-tl-[2rem] rounded-bl-xl rounded-tr-xl rounded-br-[2rem] "
               >
-                Add 
-            </button> */}
+                {navigate ? 'Stop Navigation' : 'Start Navigation'} 
+            </button>
             </div>
     </div>
   )

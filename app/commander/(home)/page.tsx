@@ -14,7 +14,7 @@ const CommanderHomePage = () => {
     const [source, setSource] = useState<{lat: number; lng: number; name: string; label: string;}>({
         lat: 0, lng: 0, name: '', label: '',
     });
-
+    const [navigate, setNavigate] = useState(false);
     const [destination, setDestination] = useState<{ lat: number; lng: number; name: string; label: string;}>({ 
         lat: 0, lng: 0, name: '', label: '',
     });
@@ -28,7 +28,7 @@ const CommanderHomePage = () => {
 
     return (
         <>
-            <SourceContext.Provider value={{source, setSource}} >
+            <SourceContext.Provider value={{source, setSource, navigate, setNavigate}} >
                 <DestinationContext value={{destination, setDestination}} >
                     {/* <LoadScript libraries={['places']} googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY} > */}
                     <LoadScript 
@@ -36,7 +36,7 @@ const CommanderHomePage = () => {
                         googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY || ''} 
                     >
                         <Navbar />
-                        <div className="font-bold text-xl">
+                        <div className="font-bold text-xl mt-[12%] sm:mt-[10%] md:mt-[6%] lg:mt-[0%]">
                             {vehicleDetail && (
                                 <form 
                                     onSubmit={handleOnSubmit} 
