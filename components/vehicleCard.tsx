@@ -7,6 +7,7 @@ import {
   BatteryFull,
   Fuel
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 type VehicleCardProps = {
   tyrePressure: number;
@@ -14,9 +15,25 @@ type VehicleCardProps = {
   fuelLevel: number;
   brakePressure: number;
   engineTemp: number;
+  onContactBase?: (issues: string[]) => void;
 };
 
-// Color logic based on value and label
+const thresholds: Record<string, { min: number; max?: number }> = {
+  'Tyre Pressure': { min: 32 },
+  'Battery': { min: 12.6 },
+  'Fuel': { min: 15 },
+  'Brake Pressure': { min: 800 },
+  'Engine Temp': { min: 40, max: 105 },
+};
+
+const maxValues: Record<string, number> = {
+  'Tyre Pressure': 35,
+  'Battery': 14.7,
+  'Fuel': 100,
+  'Brake Pressure': 1500,
+  'Engine Temp': 105,
+};
+
 const getStrokeColor = (label: string, value: number): string => {
   switch (label) {
     case 'Tyre Pressure':
@@ -39,15 +56,6 @@ const getStrokeColor = (label: string, value: number): string => {
   }
 };
 
-// Max values for each metric label
-const maxValues: Record<string, number> = {
-  'Tyre Pressure': 35,
-  'Battery': 14.7,
-  'Fuel': 100,
-  'Brake Pressure': 1500,
-  'Engine Temp': 105,
-};
-
 export const VehicleCard = ({
   tyrePressure,
   batteryCharging,
@@ -55,6 +63,8 @@ export const VehicleCard = ({
   brakePressure,
   engineTemp,
 }: VehicleCardProps) => {
+  const [acknowledgedWarnings, setAcknowledgedWarnings] = useState<string[]>([]);
+
   const metrics = [
     { label: 'Tyre Pressure', value: tyrePressure, unit: 'psi', icon: <CircleGauge /> },
     { label: 'Battery', value: batteryCharging, unit: 'V', icon: <BatteryFull /> },
@@ -62,6 +72,25 @@ export const VehicleCard = ({
     { label: 'Brake Pressure', value: brakePressure, unit: 'psi', icon: <Gauge /> },
     { label: 'Engine Temp', value: engineTemp, unit: '°C', icon: <Thermometer /> },
   ];
+
+  const currentIssues = metrics.filter((metric) => {
+    const t = thresholds[metric.label];
+    return (t.min && metric.value < t.min) || (t.max && metric.value > t.max);
+  });
+
+  // Only show issues that are not acknowledged
+  const issuesToDisplay = currentIssues.filter(
+    (i) => !acknowledgedWarnings.includes(i.label)
+  );
+
+  // Reset acknowledgment if issue reoccurs
+  useEffect(() => {
+    const currentLabels = currentIssues.map(i => i.label);
+    const newWarnings = acknowledgedWarnings.filter(label => !currentLabels.includes(label));
+    if (newWarnings.length !== acknowledgedWarnings.length) {
+      setAcknowledgedWarnings(newWarnings);
+    }
+  }, [tyrePressure, batteryCharging, fuelLevel, brakePressure, engineTemp]);
 
   return (
     <div className="card bg-base-100 w-5/6 ml-auto mr-auto shadow-sm bg-[#f3f3f3] p-2">
@@ -71,10 +100,43 @@ export const VehicleCard = ({
           src="https://api.maptiler.com/maps/satellite/?key=SlwOTH7NHaoNpputFEEE#16/25.59418/85.137682"
         />
       </figure>
+
       <div className="card-body ml-4">
-        <h2 className="card-title text-center p-4 text-3xl">
-          Vehicle Number
-        </h2>
+        <h2 className="card-title text-center p-4 text-3xl">Vehicle Number</h2>
+
+        {issuesToDisplay.length > 0 && (
+          <div className="bg-red-100 border border-red-400 text-red-800 px-6 py-4 rounded-md mb-6 shadow-md">
+            <div className="font-semibold mb-2">⚠️ Warning: Health issues detected:</div>
+            <ul className="list-disc ml-6 mb-3 text-sm">
+              {issuesToDisplay.map((metric, idx) => {
+                const t = thresholds[metric.label];
+                if (t.min && metric.value < t.min)
+                  return <li key={idx}>{metric.label} too low ({metric.value}{metric.unit}, expected ≥ {t.min}{metric.unit})</li>;
+                if (t.max && metric.value > t.max)
+                  return <li key={idx}>{metric.label} too high ({metric.value}{metric.unit}, expected ≤ {t.max}{metric.unit})</li>;
+              })}
+            </ul>
+            <div className="flex gap-4">
+              <button
+                onClick={() => alert('Contacting base...')}
+                className="bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700"
+              >
+                Contact Base
+              </button>
+              <button
+                onClick={() =>
+                  setAcknowledgedWarnings((prev) => [
+                    ...prev,
+                    ...issuesToDisplay.map((m) => m.label),
+                  ])
+                }
+                className="border border-gray-500 px-4 py-1 rounded hover:bg-gray-100"
+              >
+                Ignore
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="flex-wrap grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 p-6">
           {metrics.map((metric, idx) => {

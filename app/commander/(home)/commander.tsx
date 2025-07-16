@@ -36,11 +36,11 @@ const Commander = ({ defaultLayout = [20,32,48], navCollapsedSize, defaultCollap
     useEffect(() => {
         const interval = setInterval(() => {
             setVehicleData({
-                tyrePressure: getRandomInRange(30, 35),
-                batteryCharging: getRandomInRange(12.6, 14.7),
-                fuelLevel: getRandomInRange(20, 100),
-                brakePressure: getRandomInRange(800, 1500),
-                engineTemp: getRandomInRange(90, 105),
+                tyrePressure: getRandomInRange(20, 35),
+                batteryCharging: getRandomInRange(8, 14.7),
+                fuelLevel: getRandomInRange(10, 90),
+                brakePressure: getRandomInRange(600, 1200),
+                engineTemp: getRandomInRange(60, 105),
             });
         }, 5000);
 
@@ -107,7 +107,7 @@ const Commander = ({ defaultLayout = [20,32,48], navCollapsedSize, defaultCollap
                     
                     <TabsContent value='health' className='ml-auto w-full mr-auto'>
                         <VehicleCard 
-                            // tyrePressure={35} 
+                            // tyrePressure={32} 
                             // batteryCharging={14.7} 
                             // fuelLevel={100} 
                             // brakePressure={1500} 
