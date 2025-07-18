@@ -9,7 +9,7 @@ const VehicleDetailsPage = () => {
     return (
         <div className='h-full'>
             <h1>Vehicle Details</h1>
-            <p>Vehicle Number: BR01GL-{vehicleNum}</p>
+            <p>Vehicle Number: 🡅{vehicleNum}</p>
         </div>
     );
 };

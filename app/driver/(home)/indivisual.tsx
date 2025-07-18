@@ -7,6 +7,8 @@ import { Separator } from '@/components/ui/separator';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
+import DriverDashboard from './driver';
+import Sidebar from '../_components/sidebar/Sidebar';
 
 type Props = {
     defaultLayout: number[] | undefined
@@ -48,11 +50,8 @@ const IndivisualVehicle = ({ defaultLayout = [20,32,48], navCollapsedSize, defau
                         Vehicles
                     </div>
                     <Separator />
-                    {/* Sidebar */}
-                    Sidebar
-                    <div className='flex-1'></div>
-                    {/* AI */}
-                    Ask AI
+                    
+                    <Sidebar />
                 </div>
             </ResizablePanel>
 
@@ -61,29 +60,12 @@ const IndivisualVehicle = ({ defaultLayout = [20,32,48], navCollapsedSize, defau
                 <Tabs defaultValue='inbox'>
                     <div className='flex items-center px-4 py-2'>
                         <h1 className='text-xl font-bold'>All Data</h1>
-                        <TabsList className='ml-auto'>
-                            <TabsTrigger value='health' className='text-zinc-600 dark:text-zinc-200'>
-                                Health
-                            </TabsTrigger>
-                            <TabsTrigger value='route' className='text-zinc-600 dark:text-zinc-200'>
-                                Route
-                            </TabsTrigger>
-                        </TabsList>
                     </div>
 
                     <Separator />
-                    <div>Search Bar</div>
                     
-                    <TabsContent value='health'>
-                        Health
-                    </TabsContent>
-                    <TabsContent value='route'>
-                        Route
-                    </TabsContent>
                     <div className='flex flex-col p-4 space-y-2'>
-                        <div>Vehicle 1</div>
-                        <div>Vehicle 2</div>
-                        <div>Vehicle 3</div>
+                        <DriverDashboard />
                     </div>
                 </Tabs>
             </ResizablePanel>

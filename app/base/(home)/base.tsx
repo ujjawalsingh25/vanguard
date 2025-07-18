@@ -58,9 +58,6 @@ const Base = ({ defaultLayout = [20,32,48], navCollapsedSize, defaultCollapsed }
                     <BaseSidebar />
 
 
-                    <div className='flex-1'></div>
-                    {/* AI */}
-                    Ask AI
                 </div>
             </ResizablePanel>
 
@@ -97,11 +94,11 @@ const Base = ({ defaultLayout = [20,32,48], navCollapsedSize, defaultCollapsed }
                     
                     <TabsContent value='health'>
                         <div className='flex flex-wrap p-8 justify-between align-middle gap-6'>
-                            <VehicleCard tyrePressure={30} batteryCharging={12.6} fuelLevel={20} brakePressure={800} engineTemp={90} />
-                            <VehicleCard tyrePressure={30} batteryCharging={12.6} fuelLevel={20} brakePressure={800} engineTemp={90} />
-                            <VehicleCard tyrePressure={35} batteryCharging={14.7} fuelLevel={100} brakePressure={1500} engineTemp={105} />
-                            <VehicleCard tyrePressure={35} batteryCharging={14.7} fuelLevel={100} brakePressure={1500} engineTemp={105} />
-                            <VehicleCard tyrePressure={35} batteryCharging={14.7} fuelLevel={100} brakePressure={1500} engineTemp={105} />
+                            <VehicleCard vehicleNum="🡅08B101161W" tyrePressure={23.44} batteryCharging={8.54} fuelLevel={38.27} brakePressure={737.88} engineTemp={103.77} />
+                            <VehicleCard vehicleNum="🡅18A071829P" tyrePressure={32.64} batteryCharging={11.39} fuelLevel={52.01} brakePressure={741.0} engineTemp={73.15} />
+                            <VehicleCard vehicleNum="🡅03D153874W" tyrePressure={23.24} batteryCharging={11.14} fuelLevel={56.58} brakePressure={904.98} engineTemp={73.54} />
+                            <VehicleCard vehicleNum="🡅02B084821H" tyrePressure={28.44} batteryCharging={9.67} fuelLevel={39.39} brakePressure={955.04} engineTemp={85.05} />
+                            <VehicleCard vehicleNum="🡅64B087985E" tyrePressure={30.15} batteryCharging={14.37} fuelLevel={41.89} brakePressure={1116.48} engineTemp={82.07} />
                         </div>
                     </TabsContent>
                     <TabsContent value='route'>

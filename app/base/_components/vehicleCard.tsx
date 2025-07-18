@@ -1,4 +1,5 @@
 type VehicleCardProps = {
+  vehicleNum: string,
   tyrePressure: number;
   batteryCharging: number;
   fuelLevel: number;
@@ -6,7 +7,7 @@ type VehicleCardProps = {
   engineTemp: number;
 };
 
-export const VehicleCard = ({tyrePressure,batteryCharging, fuelLevel, brakePressure, engineTemp}: VehicleCardProps) => {
+export const VehicleCard = ({vehicleNum, tyrePressure,batteryCharging, fuelLevel, brakePressure, engineTemp}: VehicleCardProps) => {
     return (
         <div className="card bg-base-100 w-1/4 shadow-sm">
             <figure>
@@ -14,7 +15,7 @@ export const VehicleCard = ({tyrePressure,batteryCharging, fuelLevel, brakePress
             </figure>
             <div className="card-body ml-4">
                 <h2 className="card-title">
-                    Vehicle Number
+                    {vehicleNum}
                 </h2>
                 <div className="card-actions justify-end text-sm ml-2">
                     <div className="badge badge-outline">Tyre Pressure: {tyrePressure} psi</div>
