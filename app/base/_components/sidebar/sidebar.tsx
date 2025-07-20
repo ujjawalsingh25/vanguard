@@ -1,34 +1,61 @@
+// "use client";
+
+// import Link from "next/link";
+// import healthData from "@/store/healthData";
+
+// const BaseSidebar = () => {
+//     return (
+//         <div className="h-screen overflow-y-auto px-2 pt-4 font-bold text-xl">
+//             <div className="flex flex-col gap-2">
+//                 {healthData.map((item, index) => (
+//                     <Link
+//                         key={item.id || index}
+//                         href={`/base/vehicleNum-${item.vehicleNum.replace("🡅", "")}`}
+//                         className="text-black hover:underline"
+//                     >
+//                         {item.vehicleNum}
+//                     </Link>
+//                 ))}
+//             </div>
+//         </div>
+//     );
+// };
+
+// export default BaseSidebar;
+
+
 "use client";
 
 import Link from "next/link";
+import healthData from "@/store/healthData";
 
 const BaseSidebar = () => {
-    const vehicleNum1 = "08B101161W";
-    const vehicleNum2= "18A071829P";
-    const vehicleNum3 = "03D153874W";
-    const vehicleNum4 = "02B084821H";
-    const vehicleNum5 = "64B087985E";
-
     return (
-        <>
-            <div className="flex flex-col gap-2 font-bold text-xl ml-2 mt-4">
-                <Link href={`/base/vehicleNum-${vehicleNum1}`} className="text-black hover:underline">
-                    {`🡅${vehicleNum1}`}
-                </Link>
-                <Link href={`/base/vehicleNum-${vehicleNum2}`} className="text-black hover:underline">
-                    {`🡅${vehicleNum2}`}
-                </Link>
-                <Link href={`/base/vehicleNum-${vehicleNum3}`} className="text-black hover:underline">
-                    {`🡅${vehicleNum3}`}
-                </Link>
-                <Link href={`/base/vehicleNum-${vehicleNum4}`} className="text-black hover:underline">
-                    {`🡅${vehicleNum4}`}
-                </Link>
-                <Link href={`/base/vehicleNum-${vehicleNum5}`} className="text-black hover:underline">
-                    {`🡅${vehicleNum5}`}
-                </Link>
+        <div className="h-screen overflow-y-auto px-2 pt-4 font-bold text-xl">
+            <div className="flex flex-col gap-2">
+                {healthData.map((item, index) => {
+                    const cleanVehicleNum = item.vehicleNum.replace("🡅", "");
+                    const queryString = new URLSearchParams({
+                        vehicleNum: cleanVehicleNum,
+                        tyrePressure: String(item.tyrePressure),
+                        batteryCharging: String(item.batteryCharging),
+                        fuelLevel: String(item.fuelLevel),
+                        brakePressure: String(item.brakePressure),
+                        engineTemp: String(item.engineTemp),
+                    }).toString();
+
+                    return (
+                        <Link
+                            key={item.id || index}
+                            href={`/base/vehicle?${queryString}`}
+                            className="text-black hover:underline"
+                        >
+                            {item.vehicleNum}
+                        </Link>
+                    );
+                })}
             </div>
-        </>
+        </div>
     );
 };
 

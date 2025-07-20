@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/commander/_components/SearchSection.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/commander/_components/SearchSection.tsx", "app/base/[slug]/page.jsx"],
   "exclude": ["node_modules"]
 }

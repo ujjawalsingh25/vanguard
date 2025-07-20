@@ -80,8 +80,6 @@ const Commander = ({ defaultLayout = [20,32,48], navCollapsedSize, defaultCollap
                     <Separator />
                     <SearchSection />
                     <div className='flex-1'></div>
-                    {/* AI */}
-                    Ask AI
                 </div>
             </ResizablePanel>
 
